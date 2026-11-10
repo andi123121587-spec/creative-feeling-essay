@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>被偷走的创作感 — 22岁设计应届生的AI创作独白</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --body-weight: 400;
+      --body-tracking: 0.02em;
+      --body-leading: 1.85;
+      --heading-weight: 600;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #FFFFFF;
+      color: #0A0A0A;
+      font-family: 'Inter', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+      overflow-x: hidden;
+      selection-background-color: #0A0A0A;
+      selection-color: #FFFFFF;
+    }
+
+    ::selection {
+      background: #0A0A0A;
+      color: #FFFFFF;
+    }
+
+    .dynamic-copy {
+      font-weight: var(--body-weight);
+      letter-spacing: var(--body-tracking);
+      line-height: var(--body-leading);
+      transition: font-weight 0.2s ease, letter-spacing 0.2s ease, line-height 0.2s ease;
+    }
+
+    .dynamic-heading {
+      font-weight: var(--heading-weight);
+      transition: font-weight 0.2s ease;
+    }
+
+    /* Swiss Grid Overlay */
+    .swiss-grid-bg {
+      background-size: 48px 48px;
+      background-image: 
+        linear-gradient(to right, rgba(10, 10, 10, 0.045) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(10, 10, 10, 0.045) 1px, transparent 1px);
+    }
+
+    /* Draft vs AI 85-score visual styling */
+    .strike-draft {
+      text-decoration: line-through;
+      text-decoration-color: rgba(10, 10, 10, 0.35);
+      color: #737373;
+    }
+
+    .hand-note {
+      border-bottom: 1px dashed #0A0A0A;
+      padding-bottom: 1px;
+    }
+
+    /* Custom minimal range input */
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      background: #E5E5E5;
+      height: 2px;
+      width: 100%;
+      outline: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 12px;
+      height: 12px;
+      background: #0A0A0A;
+      cursor: pointer;
+      border-radius: 0;
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 12px;
+      height: 12px;
+      background: #0A0A0A;
+      cursor: pointer;
+      border-radius: 0;
+      border: none;
+    }
+
+    .fade-enter {
+      animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body class="bg-white text-[#0A0A0A] min-h-screen flex flex-col justify-between">
+
+  <!-- Top Minimal Swiss Header & Toolbar -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-sm border-b border-[#E5E5E5]">
+    <div class="max-w-6xl mx-auto px-4 sm:px-8 h-14 flex items-center justify-between gap-3">
+      <!-- Brand / Specimen Index -->
+      <div class="flex items-center gap-3 min-w-0">
+        <span class="inline-block w-2.5 h-2.5 bg-[#0A0A0A] shrink-0"></span>
+        <span class="text-xs font-mono tracking-widest uppercase truncate">MONOGRAPH // AGE 22 · DESIGN GRADUATE</span>
+      </div>
+
+      <!-- View Switcher -->
+      <nav class="flex items-center gap-1 sm:gap-2" aria-label="展示模式切换">
+        <button id="tab-editorial" type="button" class="px-2.5 py-1 text-xs font-medium tracking-wide border border-[#0A0A0A] bg-[#0A0A0A] text-white transition-colors">
+          杂志长卷
+        </button>
+        <button id="tab-cards" type="button" class="px-2.5 py-1 text-xs font-medium tracking-wide border border-transparent text-[#525252] hover:border-[#D4D4D4] hover:text-[#0A0A0A] transition-colors">
+          展签卡片 (06)
+        </button>
+        <button id="tab-compare" type="button" class="px-2.5 py-1 text-xs font-medium tracking-wide border border-transparent text-[#525252] hover:border-[#D4D4D4] hover:text-[#0A0A0A] transition-colors">
+          推敲实验室
+        </button>
+      </nav>
+
+      <!-- Quick Actions -->
+      <div class="flex items-center gap-2 shrink-0">
+        <button id="btn-toggle-grid" type="button" class="px-2.5 py-1 text-xs font-mono border border-[#E5E5E5] text-[#525252] hover:border-[#0A0A0A] hover:text-[#0A0A0A] transition-colors hidden sm:inline-flex items-center gap-1.5" title="切换瑞士网格参考线">
+          <span>GRID</span>
+          <span id="grid-status-dot" class="w-1.5 h-1.5 bg-[#D4D4D4] inline-block"></span>
+        </button>
+        <button id="btn-copy-all" type="button" class="px-3 py-1 text-xs font-medium border border-[#0A0A0A] bg-white text-[#0A0A0A] hover:bg-[#0A0A0A] hover:text-white transition-colors">
+          复制全文
+        </button>
+      </div>
+    </div>
+
+    <!-- Sub-bar: Copywriting Tone / Version Switcher + Manual Typography Tweaker -->
+    <div class="border-t border-[#F0F0F0] bg-[#FAFAFA]">
+      <div class="max-w-6xl mx-auto px-4 sm:px-8 py-2.5 flex flex-wrap items-center justify-between gap-3 text-xs">
+        <div class="flex items-center gap-2 flex-wrap">
+          <span class="text-[#737373] font-mono uppercase tracking-wider">文案版本:</span>
+          <button id="tone-refined" type="button" class="px-2 py-0.5 font-medium bg-[#0A0A0A] text-white transition-colors">
+            01 凝练策展版（适合个人网站/宣言）
+          </button>
+          <button id="tone-raw" type="button" class="px-2 py-0.5 font-medium text-[#525252] hover:text-[#0A0A0A] transition-colors">
+            02 原声手记版（保留真实停顿与呼吸）
+          </button>
+          <button id="tone-minimal" type="button" class="px-2 py-0.5 font-medium text-[#525252] hover:text-[#0A0A0A] transition-colors">
+            03 极简金句版（适合社媒连载）
+          </button>
+        </div>
+
+        <!-- Typography Manual Tweak Bar (Reclaiming the joy of tweaking!) -->
+        <div class="flex items-center gap-4 text-[11px] text-[#525252]">
+          <label class="flex items-center gap-1.5 cursor-pointer">
+            <span class="font-mono">字重</span>
+            <select id="select-weight" class="bg-white border border-[#E5E5E5] px-1.5 py-0.5 text-[#0A0A0A] focus:outline-none focus:border-[#0A0A0A]">
+              <option value="300">纤细 300</option>
+              <option value="400" selected>常规 400</option>
+              <option value="500">中等 500</option>
+            </select>
+          </label>
+          <label class="hidden md:flex items-center gap-2 w-28">
+            <span class="font-mono shrink-0">字距</span>
+            <input id="range-tracking" type="range" min="0" max="12" step="1" value="2" />
+          </label>
+          <label class="hidden md:flex items-center gap-2 w-28">
+            <span class="font-mono shrink-0">行高</span>
+            <input id="range-leading" type="range" min="150" max="230" step="5" value="185" />
+          </label>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Surface -->
+  <main id="main-surface" class="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-8 py-10 sm:py-16 transition-all">
+
+    <!-- ==================== VIEW 1: EDITORIAL MANIFESTO ==================== -->
+    <section id="view-editorial" class="fade-enter">
+      <!-- Hero Editorial Block -->
+      <div class="border-b border-[#0A0A0A] pb-12 sm:pb-16 mb-12 sm:mb-16">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
+          <div class="lg:col-span-8">
+            <div class="flex items-center gap-3 text-xs font-mono uppercase tracking-widest text-[#737373] mb-6">
+              <span>ESSAY &amp; MONOLOGUE</span>
+              <span>/</span>
+              <span>SANS-SERIF EDITION</span>
+              <span>/</span>
+              <span>85-POINT DILEMMA</span>
+            </div>
+            <h1 id="hero-title" class="dynamic-heading text-3xl sm:text-5xl lg:text-[54px] tracking-tight leading-[1.15] text-[#0A0A0A] mb-6">
+              我在享受 AI 带来的效率，<br />同时感受到「创作感」正在被 AI 偷走。
+            </h1>
+            <p id="hero-subtitle" class="text-base sm:text-lg text-[#525252] max-w-2xl leading-relaxed font-normal">
+              这是我最近用 AI 搭建个人网站时最真实的体感：当「做出」与「部署」的门槛被无限抹平，那个曾让我着迷的、漫长而笨拙的「推敲过程」，也一并消失了。
+            </p>
+          </div>
+
+          <div class="lg:col-span-4 lg:border-l lg:border-[#E5E5E5] lg:pl-8 flex flex-col justify-between space-y-6">
+            <div class="space-y-2">
+              <div class="text-[11px] font-mono uppercase tracking-widest text-[#737373]">AUTHOR PROFILE</div>
+              <div class="text-sm font-medium text-[#0A0A0A]">22 岁 · 普通高校设计系应届生</div>
+              <div class="text-xs text-[#525252] leading-relaxed">
+                热爱设计、审美与表达。在没有标准答案的成人世界门口，试图找回手脑相连的创作实感。
+              </div>
+            </div>
+            <div class="grid grid-cols-3 border-t border-[#E5E5E5] pt-4 text-left">
+              <div>
+                <div class="text-[10px] font-mono text-[#737373]">AI 成品均分</div>
+                <div class="text-lg font-mono font-semibold">85<span class="text-xs font-normal text-[#737373]"> / 100</span></div>
+              </div>
+              <div>
+                <div class="text-[10px] font-mono text-[#737373]">前期推敲耗时</div>
+                <div class="text-lg font-mono font-semibold">0<span class="text-xs font-normal text-[#737373]"> min</span></div>
+              </div>
+              <div>
+                <div class="text-[10px] font-mono text-[#737373]">当下年纪</div>
+                <div class="text-lg font-mono font-semibold">22<span class="text-xs font-normal text-[#737373]"> yrs</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapters List (Populated dynamically by selected tone) -->
+      <div id="editorial-chapters" class="space-y-12 sm:space-y-16"></div>
+
+      <!-- Closing Signature Callout -->
+      <div class="mt-16 sm:mt-24 border border-[#0A0A0A] p-6 sm:p-12 bg-white relative">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 mb-6 border-b border-[#E5E5E5]">
+          <span class="text-xs font-mono tracking-widest uppercase text-[#737373]">EPILOGUE // 22岁的阶段性答案</span>
+          <span class="text-xs font-mono text-[#0A0A0A]">DO WHAT FEELS RIGHT, DIG DEEP.</span>
+        </div>
+        <blockquote id="closing-quote" class="text-xl sm:text-3xl font-medium tracking-tight leading-snug text-[#0A0A0A] mb-6">
+          “做目前觉得对的一切事情。喜欢设计，就寻找一个方向深挖。就这样。”
+        </blockquote>
+        <div class="flex flex-wrap items-center justify-between gap-4 text-xs text-[#525252]">
+          <span>写于一次个人网站上线之后 · 献给每一个还在坚持「亲手推敲」的创作者</span>
+          <button id="btn-copy-epilogue" type="button" class="font-mono underline underline-offset-4 text-[#0A0A0A] hover:opacity-70">
+            [复制结语金句]
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 2: EXHIBITION CARDS (6 SLIDES) ==================== -->
+    <section id="view-cards" class="hidden fade-enter">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-8 mb-8 border-b border-[#0A0A0A]">
+        <div>
+          <div class="text-xs font-mono uppercase tracking-widest text-[#737373] mb-2">SOCIAL &amp; PORTFOLIO SPECIMEN CARDS</div>
+          <h2 class="text-2xl sm:text-3xl font-semibold tracking-tight">六幕独白 · 展签卡片集</h2>
+          <p class="text-xs sm:text-sm text-[#525252] mt-1">纯粹白底黑字无衬线排版，可直接用于个人网站切片展示、小红书/朋友圈图文或作品集扉页。</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-mono text-[#737373]">卡片比例:</span>
+          <button id="aspect-3-4" type="button" class="px-2.5 py-1 text-xs font-mono border border-[#0A0A0A] bg-[#0A0A0A] text-white">3:4 竖版海报</button>
+          <button id="aspect-1-1" type="button" class="px-2.5 py-1 text-xs font-mono border border-[#E5E5E5] text-[#525252] hover:border-[#0A0A0A]">1:1 方画幅</button>
+        </div>
+      </div>
+
+      <div id="cards-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </section>
+
+    <!-- ==================== VIEW 3: INTERACTIVE "PROCESS VS 85-SCORE" LAB ==================== -->
+    <section id="view-compare" class="hidden fade-enter">
+      <div class="border-b border-[#0A0A0A] pb-8 mb-10">
+        <div class="text-xs font-mono uppercase tracking-widest text-[#737373] mb-2">INTERACTIVE REFLECTION // THE 85-POINT PARADOX</div>
+        <h2 class="text-2xl sm:text-3xl font-semibold tracking-tight mb-3">「85分现成结果」与「亲手推敲过程」的对照实验</h2>
+        <p class="text-sm text-[#525252] max-w-2xl leading-relaxed">
+          拖动下方滑块或点击阶段按钮，直观感受「只接受 AI 85分完成品的怪圈」与「从粗糙草稿慢慢打磨出真我表达」之间的心理温差。
+        </p>
+      </div>
+
+      <!-- Slider Control Box -->
+      <div class="border border-[#0A0A0A] p-6 sm:p-8 mb-10 bg-white">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <div>
+            <span class="text-xs font-mono uppercase tracking-widest text-[#737373] block mb-1">CURRENT MODE</span>
+            <div id="lab-mode-label" class="text-lg sm:text-xl font-semibold text-[#0A0A0A]">
+              阶段 C · 唤醒手脑：带着涂改痕迹的真实表达（100% 属于自己）
+            </div>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <button id="preset-ai" type="button" class="px-3 py-1.5 text-xs font-mono border border-[#E5E5E5] hover:border-[#0A0A0A] transition-colors">
+              AI 85分速成态 (0%)
+            </button>
+            <button id="preset-struggle" type="button" class="px-3 py-1.5 text-xs font-mono border border-[#E5E5E5] hover:border-[#0A0A0A] transition-colors">
+              卡壳与叩问 (50%)
+            </button>
+            <button id="preset-human" type="button" class="px-3 py-1.5 text-xs font-mono border border-[#0A0A0A] bg-[#0A0A0A] text-white transition-colors">
+              亲手推敲态 (100%)
+            </button>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <div class="flex justify-between text-xs font-mono text-[#737373]">
+            <span>0% — 仅输入 Prompt · 妥协于 85 分现成结果</span>
+            <span id="lab-slider-val" class="text-[#0A0A0A] font-semibold">推敲浓度: 100%</span>
+            <span>100% — 调研 · 粗糙动笔 · 反复推敲 · 容器盛放</span>
+          </div>
+          <input id="lab-slider" type="range" min="0" max="100" step="1" value="100" />
+        </div>
+      </div>
+
+      <!-- Dual Comparison Canvas -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <!-- Left: Live Evolving Draft Surface -->
+        <div class="lg:col-span-7 border border-[#E5E5E5] p-6 sm:p-10 flex flex-col justify-between bg-white">
+          <div>
+            <div class="flex items-center justify-between border-b border-[#E5E5E5] pb-4 mb-6 text-xs font-mono text-[#737373]">
+              <span id="specimen-tag">SPECIMEN // HUMAN ITERATION</span>
+              <span id="specimen-score">真实契合度: 98%</span>
+            </div>
+            <div id="lab-manifesto-preview" class="space-y-5 text-base sm:text-lg leading-relaxed"></div>
+          </div>
+
+          <div class="mt-10 pt-6 border-t border-[#E5E5E5] flex flex-wrap items-center justify-between gap-3 text-xs text-[#737373] font-mono">
+            <span id="specimen-footnote">状态：想法正在慢慢流淌进容器里</span>
+            <button id="btn-copy-lab" type="button" class="text-[#0A0A0A] underline underline-offset-4">复制当前推敲段落</button>
+          </div>
+        </div>
+
+        <!-- Right: Psychological & Creative Metrics Breakdown -->
+        <div class="lg:col-span-5 border border-[#E5E5E5] p-6 sm:p-8 flex flex-col justify-between space-y-6 bg-[#FAFAFA]">
+          <div>
+            <div class="text-xs font-mono uppercase tracking-widest text-[#737373] mb-4">CREATIVE DIAGNOSTIC // 创作心理切片</div>
+            <h3 class="text-lg font-semibold mb-6">为什么 85 分的完成品，反而让人心里漏掉一块？</h3>
+
+            <div class="space-y-5">
+              <div>
+                <div class="flex justify-between text-xs mb-1.5">
+                  <span class="font-medium">交付效率与完成度 (Efficiency)</span>
+                  <span id="metric-eff-text" class="font-mono">75%</span>
+                </div>
+                <div class="w-full h-1.5 bg-[#E5E5E5]">
+                  <div id="metric-eff-bar" class="h-full bg-[#0A0A0A] transition-all duration-300" style="width: 75%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between text-xs mb-1.5">
+                  <span class="font-medium">前期调研与草稿推敲 (Deliberation)</span>
+                  <span id="metric-delib-text" class="font-mono">100%</span>
+                </div>
+                <div class="w-full h-1.5 bg-[#E5E5E5]">
+                  <div id="metric-delib-bar" class="h-full bg-[#0A0A0A] transition-all duration-300" style="width: 100%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between text-xs mb-1.5">
+                  <span class="font-medium">自我表达契合度 (Self-Expression)</span>
+                  <span id="metric-self-text" class="font-mono">100%</span>
+                </div>
+                <div class="w-full h-1.5 bg-[#E5E5E5]">
+                  <div id="metric-self-bar" class="h-full bg-[#0A0A0A] transition-all duration-300" style="width: 100%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between text-xs mb-1.5">
+                  <span class="font-medium">内心空洞感 / 妥协积压 (Inner Void)</span>
+                  <span id="metric-void-text" class="font-mono">10%</span>
+                </div>
+                <div class="w-full h-1.5 bg-[#E5E5E5]">
+                  <div id="metric-void-bar" class="h-full bg-[#737373] transition-all duration-300" style="width: 10%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="border-t border-[#E5E5E5] pt-5">
+            <div class="text-xs font-mono text-[#737373] mb-2">DESIGNER'S NOTE</div>
+            <p id="lab-reflection-note" class="text-xs sm:text-sm text-[#3F3F46] leading-relaxed">
+              当我不急着向 AI 索取那个 85 分的现成答案，而是允许自己先画出一个粗糙、笨拙却长着自己指纹的草稿时，心里漏掉的那一块，才真正开始被填满。
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Minimalist Footer -->
+  <footer class="border-t border-[#E5E5E5] bg-white mt-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-[#737373]">
+      <div>WHITE PAPER / BLACK SANS-SERIF SPECIMEN · FOR PERSONAL WEBSITE &amp; EDITORIAL ARCHIVE</div>
+      <div>AGE 22 · GRADUATING DESIGNER · KEEP DIGGING DEEP</div>
+    </div>
+  </footer>
+
+  <!-- Minimal In-Page Toast Notification -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 bg-[#0A0A0A] text-white px-4 py-2.5 text-xs font-mono tracking-wide shadow-lg opacity-0 pointer-events-none transition-opacity duration-200">
+    已复制到剪贴板
+  </div>
+
+  <script>
+    // ==================== DATA: THREE TONE VERSIONS OF THE 6 CHAPTERS ====================
+    const CHAPTERS_DATA = [
+      {
+        index: "01",
+        tag: "EFFICIENCY & LOSS // 效率与失落",
+        title: "被抹平的门槛，与消失的「推敲」",
+        pullQuote: "AI 降低了我「做出」和「部署」网站的成本，但在整个制作过程里，我并没有享受到推敲设计的过程。",
+        refined: [
+          "最近在用 AI 搭建自己的个人网站时，我产生了一种强烈而微妙的割裂感。",
+          "AI 的出现，确实极大地降低了「做出」一个网站和「部署」上线的成本。过去需要反复折腾的代码与构建流程，如今在极短的时间内就能跨过。",
+          "可当网站真正跑起来的那一刻，我却意识到：在整个「制作」的过程中，我几乎没有享受到哪怕一刻「推敲设计」的快乐。"
+        ],
+        raw: [
+          "这种感受是我最近在使用 AI 做个人网站的一个真实感受。",
+          "AI 出现降低了我来「做出」网站和「部署」网站的成本，但在整个「制作」的过程，我并没有享受到推敲设计的过程。"
+        ],
+        minimal: [
+          "AI 让「做出网站」和「部署上线」变得轻而易举。",
+          "但当结果瞬间抵达，那个最迷人的「推敲设计的过程」，却在效率里蒸发了。"
+        ]
+      },
+      {
+        index: "02",
+        tag: "THE VESSEL // 容器与流淌",
+        title: "我所热爱的，是想法慢慢流淌进容器的感觉",
+        pullQuote: "喜欢想法慢慢流淌出来，通过一个容器去接受它的感觉。",
+        refined: [
+          "首先，我是一个很爱设计、很爱审美与表达的人。",
+          "对我来说，设计从来不只是交付一个视觉结果。我真正迷恋的，是脑海里的想法一点点生长、慢慢流淌出来，再由我亲手打磨一个恰如其分的「容器」，稳稳地去承接它的那种感觉。",
+          "那是创作者与作品之间最私密、最无法被替代的呼吸感。"
+        ],
+        raw: [
+          "首先我很爱设计，很爱审美和表达。",
+          "喜欢想法慢慢流淌出来，通过一个容器去接受它的感觉。"
+        ],
+        minimal: [
+          "我爱设计，爱审美与表达。",
+          "我迷恋的不是一键生成的答案，而是想法慢慢流淌出来、被一个亲手塑造的容器温柔接住的过程。"
+        ]
+      },
+      {
+        index: "03",
+        tag: "ATROPHY // 惊艳之后的退化",
+        title: "从惊叹科技，到放弃那个「粗糙的开始」",
+        pullQuote: "放弃了前期花大量时间去调研、思考、推敲，再去动笔先创造一个很粗糙的东西、慢慢修改它的过程。",
+        refined: [
+          "刚开始用 AI 做设计的时候，我只觉得惊艳——无论输入什么，它给出的反馈都很惊艳，甚至让我由衷感叹科技竟然已经发展到了这种地步。",
+          "但后来，我发现自己变得不再思考了。",
+          "在没有 AI 的时候，做设计意味着前期要花大量的时间去调研、去思考、去推敲；意味着哪怕眼高手低，也要先硬着头皮动笔，创造出一个很粗糙、很笨拙的雏形，再在一遍遍推翻与修改中让它长出血肉。",
+          "而现在，我亲手放弃了这个从粗糙走向清晰的过程。"
+        ],
+        raw: [
+          "刚开始用 AI 做设计，只觉得惊艳，做什么都很惊艳，感叹于科技发展成这样。",
+          "后来我变得不再思考，放弃了在没有 AI 做设计时，前期要花大量的时间去调研、思考、推敲，再去动笔先创造一个很粗糙的东西，慢慢修改它的过程。"
+        ],
+        minimal: [
+          "初遇 AI 时，满眼都是对科技的惊叹。",
+          "后来我却停止了思考——放弃了漫长的调研与推敲，也弄丢了那个「先画出一个粗糙雏形，再慢慢修改它」的笨拙勇气。"
+        ]
+      },
+      {
+        index: "04",
+        tag: "THE 85-POINT TRAP // 85分怪圈",
+        title: "妥协在 85 分的现成完成品里",
+        pullQuote: "这个完成品可能有优秀的 85 分，却不是你真正想表达的。但看了看现成的完成品，心里核算一下：OK，用这个吧。",
+        refined: [
+          "我开始陷入一种「只接受结果」的怪圈。",
+          "推敲设计的过程消失了，取而代之的，是只需要输入几句简单的表达，就能立刻换来一个功能完善、效果精美的完成品。",
+          "这个完成品或许能拿到优秀的 85 分，但它唯独不是我真正想表达的东西。可每次看着眼前现成的、体面的完成品，我都会在心里默默核算一下重新动手的成本，然后妥协道：「OK，就用这个吧。」"
+        ],
+        raw: [
+          "我开始陷入到一种只接受结果的怪圈。推敲设计的过程消失，被取代的是只需要简单表达，一个功能完善、效果精美的完成品。",
+          "这个完成品可能有优秀的 85 分，却不是你真正想表达的。但看了看现成的完成品，心里核算一下：OK，用这个吧。"
+        ],
+        minimal: [
+          "推敲消失了，只剩下几句提示词换来的 85 分精美成品。",
+          "它工整、体面、挑不出大错，却唯独不是我真正想说的话。而我看了看转换成本，对它说：「OK，用这个吧。」"
+        ]
+      },
+      {
+        index: "05",
+        tag: "THE INNER VOID // 空洞与积压",
+        title: "心里好像漏掉一块，还不知道怎么被填满",
+        pullQuote: "慢慢让自己走进一个封闭的、只强调 AI 的怪圈，忘记了你到底想要表达什么，心里好像漏掉一块。",
+        refined: [
+          "我并不是一个心智已经彻底成熟的高级成年人。每一次说着「OK，用这个吧」，那种极其不满意的情绪都会在心头悄悄积压。",
+          "我开始反复追问自己：到底什么样，才是你真正满意的？",
+          "可回头审视自己的实际操作，其实我既没有去调研思考任何设计，也没有沉淀出任何属于自己的思路。我只是慢慢把自己关进了一个封闭的、只强调 AI 的怪圈里——渐渐忘记了自己到底想要表达什么、到底想要做什么。",
+          "心里好像突然漏掉了一块，空落落的，却还不知道该用什么去填满。"
+        ],
+        raw: [
+          "我并不是一个心智成熟的高级成年人，非常不满意的情绪慢慢在心头积压，反复追问自己：到底什么样才是你真正满意的？",
+          "而实际操作，其实并没有调研思考任何设计，也没有任何思路，慢慢让自己走进一个封闭的、只强调 AI 的怪圈，忘记了你到底想要表达什么，你到底要做什么，心里好像漏掉一块，还不知道怎么被填满。"
+        ],
+        minimal: [
+          "不满在心头悄悄积压。反复追问自己想要什么，却发现自己早已没有了调研与思路。",
+          "走进只强调 AI 的封闭怪圈里，忘了初衷，心里像漏掉了一块，不知道怎么填满。"
+        ]
+      },
+      {
+        index: "06",
+        tag: "AGE 22 ANSWER // 22岁的答案",
+        title: "做目前觉得对的一切事情，寻找一个方向深挖",
+        pullQuote: "做目前觉得对的一切事情，喜欢设计就寻找一个方向深挖，就这样。",
+        refined: [
+          "我今年 22 岁，是一所不知名大学设计专业的应届毕业生。",
+          "站在毕业与时代的交叉口，我其实并不知道该以什么样的角度，去看待那个并没有标准答案的「高级成年人的世界」。",
+          "但在经历了这场关于效率与创作感的自我拉扯后，我渐渐思考出了一个属于当下的答案：",
+          "去做目前觉得对的一切事情。既然喜欢设计，那就寻找一个方向，扎进去深挖。就这样。"
+        ],
+        raw: [
+          "我今年 22 岁，不知名大学设计的应届生，我不知道以什么样的角度去看待并没有标准答案的高级成年人的世界。",
+          "后来，我渐渐思考出一个答案：做目前觉得对的一切事情，喜欢设计就寻找一个方向深挖，就这样。"
+        ],
+        minimal: [
+          "22 岁，双非设计应届生，面对没有标准答案的成人世界。",
+          "我想通了属于我的答案：做目前觉得对的一切事情。喜欢设计，就找一个方向深挖。就这样。"
+        ]
+      }
+    ];
+
+    // ==================== STATE ====================
+    let currentView = "editorial"; // 'editorial' | 'cards' | 'compare'
+    let currentTone = "refined";   // 'refined' | 'raw' | 'minimal'
+    let cardAspect = "3-4";        // '3-4' | '1-1'
+    let showGrid = false;
+    let labSliderValue = 100;
+
+    // ==================== HELPERS ====================
+    function showToast(msg) {
+      const toast = document.getElementById("toast");
+      toast.textContent = msg;
+      toast.classList.remove("opacity-0");
+      toast.classList.add("opacity-100");
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => {
+        toast.classList.remove("opacity-100");
+        toast.classList.add("opacity-0");
+      }, 2200);
+    }
+
+    function copyTextToClipboard(text, successMsg) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+          showToast(successMsg || "已复制到剪贴板");
+        }).catch(() => {
+          fallbackCopy(text, successMsg);
+        });
+      } else {
+        fallbackCopy(text, successMsg);
+      }
+    }
+
+    function fallbackCopy(text, successMsg) {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand("copy");
+        showToast(successMsg || "已复制到剪贴板");
+      } catch (e) {
+        showToast("复制失败，请手动选择复制");
+      }
+      document.body.removeChild(ta);
+    }
+
+    // ==================== RENDER: EDITORIAL VIEW ====================
+    function renderEditorial() {
+      const container = document.getElementById("editorial-chapters");
+      container.innerHTML = CHAPTERS_DATA.map((ch) => {
+        const paragraphs = ch[currentTone] || ch.refined;
+        const copyPayload = `【${ch.index} ${ch.title}】\n${paragraphs.join("\n\n")}`;
+
+        return `
+          <article class="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-10 pb-12 sm:pb-16 border-b border-[#E5E5E5] group">
+            <!-- Left Meta Column -->
+            <div class="lg:col-span-4 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center gap-3 mb-3">
+                  <span class="text-2xl sm:text-3xl font-mono font-light text-[#0A0A0A]">${ch.index}</span>
+                  <span class="h-[1px] w-8 bg-[#0A0A0A]"></span>
+                  <span class="text-[11px] font-mono uppercase tracking-widest text-[#737373]">${ch.tag}</span>
+                </div>
+                <h2 class="dynamic-heading text-xl sm:text-2xl tracking-tight text-[#0A0A0A] leading-snug mb-4">
+                  ${ch.title}
+                </h2>
+              </div>
+
+              <div class="hidden lg:block border-l-2 border-[#0A0A0A] pl-4 py-1 my-4">
+                <p class="text-xs text-[#525252] leading-relaxed">
+                  “${ch.pullQuote}”
+                </p>
+              </div>
+
+              <div class="mt-2">
+                <button type="button" data-copy-index="${ch.index}" class="btn-copy-section text-[11px] font-mono text-[#737373] hover:text-[#0A0A0A] underline underline-offset-4 transition-colors">
+                  [复制本节文案]
+                </button>
+              </div>
+            </div>
+
+            <!-- Right Prose Column -->
+            <div class="lg:col-span-8 flex flex-col justify-center space-y-5">
+              ${paragraphs.map(p => `
+                <p class="dynamic-copy text-base sm:text-[17px] text-[#171717]">
+                  ${p}
+                </p>
+              `).join("")}
+            </div>
+          </article>
+        `;
+      }).join("");
+
+      // Bind section copy buttons
+      container.querySelectorAll(".btn-copy-section").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const idx = btn.getAttribute("data-copy-index");
+          const ch = CHAPTERS_DATA.find(item => item.index === idx);
+          if (ch) {
+            const paragraphs = ch[currentTone] || ch.refined;
+            copyTextToClipboard(`${ch.title}\n\n${paragraphs.join("\n\n")}`, `已复制第 ${ch.index} 节文案`);
+          }
+        });
+      });
+    }
+
+    // ==================== RENDER: EXHIBITION CARDS VIEW ====================
+    function renderCards() {
+      const grid = document.getElementById("cards-grid");
+      const aspectClass = cardAspect === "3-4" ? "aspect-[3/4]" : "aspect-square";
+
+      grid.innerHTML = CHAPTERS_DATA.map((ch) => {
+        const paragraphs = ch[currentTone] || ch.refined;
+        return `
+          <div class="border border-[#0A0A0A] bg-white p-6 sm:p-8 flex flex-col justify-between ${aspectClass} relative group hover:shadow-[6px_6px_0px_0px_#0A0A0A] transition-shadow">
+            <!-- Card Top Meta -->
+            <div>
+              <div class="flex items-center justify-between border-b border-[#0A0A0A] pb-3 mb-5">
+                <span class="text-xs font-mono font-semibold tracking-widest">${ch.index} / 06</span>
+                <span class="text-[10px] font-mono uppercase tracking-widest text-[#737373]">${ch.tag.split("//")[0].trim()}</span>
+              </div>
+              <h3 class="dynamic-heading text-lg sm:text-xl tracking-tight leading-snug text-[#0A0A0A] mb-4">
+                ${ch.title}
+              </h3>
+            </div>
+
+            <!-- Card Body Text -->
+            <div class="my-auto space-y-3 overflow-y-auto pr-1">
+              ${paragraphs.map(p => `
+                <p class="dynamic-copy text-xs sm:text-sm text-[#1F1F1F]">
+                  ${p}
+                </p>
+              `).join("")}
+            </div>
+
+            <!-- Card Footer -->
+            <div class="pt-4 mt-4 border-t border-[#E5E5E5] flex items-center justify-between text-[11px] font-mono text-[#737373]">
+              <span>AGE 22 · DESIGN MONOLOGUE</span>
+              <button type="button" data-card-index="${ch.index}" class="btn-copy-card text-[#0A0A0A] hover:underline underline-offset-4">
+                复制卡片文案
+              </button>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      grid.querySelectorAll(".btn-copy-card").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const idx = btn.getAttribute("data-card-index");
+          const ch = CHAPTERS_DATA.find(item => item.index === idx);
+          if (ch) {
+            const paragraphs = ch[currentTone] || ch.refined;
+            copyTextToClipboard(`${ch.index} / 06 ${ch.title}\n\n${paragraphs.join("\n\n")}`, `已复制卡片 ${ch.index} 文案`);
+          }
+        });
+      });
+    }
+
+    // ==================== RENDER: INTERACTIVE LAB VIEW ====================
+    function renderLab(val) {
+      const v = Number(val);
+      const labelEl = document.getElementById("lab-mode-label");
+      const sliderValEl = document.getElementById("lab-slider-val");
+      const previewEl = document.getElementById("lab-manifesto-preview");
+      const tagEl = document.getElementById("specimen-tag");
+      const scoreEl = document.getElementById("specimen-score");
+      const footnoteEl = document.getElementById("specimen-footnote");
+      const noteEl = document.getElementById("lab-reflection-note");
+
+      sliderValEl.textContent = `推敲浓度: ${v}%`;
+
+      // Update preset button active borders
+      const btnAi = document.getElementById("preset-ai");
+      const btnStruggle = document.getElementById("preset-struggle");
+      const btnHuman = document.getElementById("preset-human");
+      [btnAi, btnStruggle, btnHuman].forEach(b => {
+        b.className = "px-3 py-1.5 text-xs font-mono border border-[#E5E5E5] text-[#525252] hover:border-[#0A0A0A] transition-colors";
+      });
+
+      if (v < 35) {
+        btnAi.className = "px-3 py-1.5 text-xs font-mono border border-[#0A0A0A] bg-[#0A0A0A] text-white transition-colors";
+        labelEl.textContent = "阶段 A · 85分 AI 速成态：功能完善、效果精美，却没有「我」";
+        tagEl.textContent = "SPECIMEN // AI 85-SCORE TEMPLATE OUTPUT";
+        scoreEl.textContent = "表面完成度: 85分 | 表达契合度: 15%";
+        footnoteEl.textContent = "状态：看了看现成的完成品，心里核算一下「OK，用这个吧」";
+        previewEl.innerHTML = `
+          <div class="p-4 border border-[#E5E5E5] bg-[#FAFAFA] text-xs font-mono text-[#737373] mb-4">
+            &gt; Prompt: 生成一个干净现代的设计师个人网站主页文案，突出专业感与审美。
+          </div>
+          <p class="text-[#525252]">
+            “你好，我是一名专注于视觉与数字体验的青年设计师。我擅长将前沿技术与极简美学相结合，打造兼具商业价值与情感共鸣的设计方案……”
+          </p>
+          <p class="text-sm text-[#737373] border-l-2 border-[#D4D4D4] pl-3">
+            【内心旁白】这段话挑不出任何语病，排版也工整得像标准模板。它能拿 85 分，可它说的不是我。我没有调研，没有动笔，只是点了一下生成，然后对着屏幕发呆。
+          </p>
+        `;
+        noteEl.textContent = "当创作变成「输入提示词—验收 85 分结果」，前期所有的调研、推敲和笨拙试错都被跳过了。效率拉满的同时，心里的空洞感也达到了顶点。";
+      } else if (v < 75) {
+        btnStruggle.className = "px-3 py-1.5 text-xs font-mono border border-[#0A0A0A] bg-[#0A0A0A] text-white transition-colors";
+        labelEl.textContent = "阶段 B · 醒觉与叩问：拒绝假装满意，承认心里的空缺";
+        tagEl.textContent = "SPECIMEN // SELF-QUESTIONING DRAFT";
+        scoreEl.textContent = "表面完成度: 推翻重来中 | 诚实度: 80%";
+        footnoteEl.textContent = "状态：反复追问自己「到底什么样才是你真正满意的？」";
+        previewEl.innerHTML = `
+          <p class="strike-draft text-sm">
+            “你好，我是一名专注于视觉与数字体验的青年设计师……”（划掉：太假了，这不是我想说的话）
+          </p>
+          <p class="text-[#0A0A0A]">
+            我并不是一个心智成熟的高级成年人。每次对 85 分的 AI 成品妥协说「OK 用这个吧」，非常不满意的情绪都在心头积压。
+          </p>
+          <p class="text-[#0A0A0A]">
+            我关掉了自动生成窗口，重新打开一张空白画布。哪怕现在大脑一片空白、没有任何成熟的思路，我也想先诚实地面对心里漏掉的那一块。
+          </p>
+        `;
+        noteEl.textContent = "承认「我不满意」，是找回创作感的第一步。不再用 85 分的精美外壳糊弄自己，允许自己在空白画布前感到笨拙与迷茫。";
+      } else {
+        btnHuman.className = "px-3 py-1.5 text-xs font-mono border border-[#0A0A0A] bg-[#0A0A0A] text-white transition-colors";
+        labelEl.textContent = "阶段 C · 亲手推敲态：先画一个粗糙的东西，让想法流淌进容器";
+        tagEl.textContent = "SPECIMEN // AUTHENTIC HUMAN DELIBERATION";
+        scoreEl.textContent = "表面完成度: 持续生长 | 自我契合度: 100%";
+        footnoteEl.textContent = "状态：做目前觉得对的一切事情，喜欢设计就寻找一个方向深挖";
+        previewEl.innerHTML = `
+          <p class="text-[#0A0A0A]">
+            我今年 22 岁，不知名大学设计的应届生。我很爱设计，很爱审美和表达——<span class="hand-note">喜欢想法慢慢流淌出来，通过一个容器去接受它的感觉</span>。
+          </p>
+          <p class="text-[#0A0A0A]">
+            哪怕前期要花大量的时间去调研、思考、推敲，哪怕一开始动笔创造出来的东西很粗糙，我也要亲手去慢慢修改它。
+          </p>
+          <p class="text-[#0A0A0A] font-medium">
+            我不知道以什么样的角度去看待没有标准答案的高级成年人的世界。但我渐渐思考出一个答案：做目前觉得对的一切事情，喜欢设计就寻找一个方向深挖。就这样。
+          </p>
+        `;
+        noteEl.textContent = "当我不急着向 AI 索取那个 85 分的现成答案，而是允许自己先画出一个粗糙、笨拙却长着自己指纹的草稿时，心里漏掉的那一块，才真正开始被填满。";
+      }
+
+      // Update Metrics Bars dynamically based on v
+      const eff = Math.round(95 - v * 0.2);
+      const delib = v;
+      const selfExp = Math.round(15 + v * 0.85);
+      const voidVal = Math.round(92 - v * 0.82);
+
+      document.getElementById("metric-eff-text").textContent = `${eff}%`;
+      document.getElementById("metric-eff-bar").style.width = `${eff}%`;
+
+      document.getElementById("metric-delib-text").textContent = `${delib}%`;
+      document.getElementById("metric-delib-bar").style.width = `${delib}%`;
+
+      document.getElementById("metric-self-text").textContent = `${selfExp}%`;
+      document.getElementById("metric-self-bar").style.width = `${selfExp}%`;
+
+      document.getElementById("metric-void-text").textContent = `${voidVal}%`;
+      document.getElementById("metric-void-bar").style.width = `${voidVal}%`;
+    }
+
+    // ==================== NAVIGATION & CONTROLS ====================
+    function switchView(view) {
+      currentView = view;
+      const views = {
+        editorial: document.getElementById("view-editorial"),
+        cards: document.getElementById("view-cards"),
+        compare: document.getElementById("view-compare")
+      };
+      const tabs = {
+        editorial: document.getElementById("tab-editorial"),
+        cards: document.getElementById("tab-cards"),
+        compare: document.getElementById("tab-compare")
+      };
+
+      Object.keys(views).forEach((k) => {
+        if (k === view) {
+          views[k].classList.remove("hidden");
+          tabs[k].className = "px-2.5 py-1 text-xs font-medium tracking-wide border border-[#0A0A0A] bg-[#0A0A0A] text-white transition-colors";
+        } else {
+          views[k].classList.add("hidden");
+          tabs[k].className = "px-2.5 py-1 text-xs font-medium tracking-wide border border-transparent text-[#525252] hover:border-[#D4D4D4] hover:text-[#0A0A0A] transition-colors";
+        }
+      });
+    }
+
+    function switchTone(tone) {
+      currentTone = tone;
+      const tones = {
+        refined: document.getElementById("tone-refined"),
+        raw: document.getElementById("tone-raw"),
+        minimal: document.getElementById("tone-minimal")
+      };
+      Object.keys(tones).forEach((k) => {
+        if (k === tone) {
+          tones[k].className = "px-2 py-0.5 font-medium bg-[#0A0A0A] text-white transition-colors";
+        } else {
+          tones[k].className = "px-2 py-0.5 font-medium text-[#525252] hover:text-[#0A0A0A] transition-colors";
+        }
+      });
+      renderEditorial();
+      renderCards();
+    }
+
+    function getFullCopyText() {
+      const header = "我在享受 AI 带来的效率，同时感受到「创作感」正在被 AI 偷走。\n\n";
+      const body = CHAPTERS_DATA.map((ch) => {
+        const paragraphs = ch[currentTone] || ch.refined;
+        return `${ch.index} / ${ch.title}\n${paragraphs.join("\n")}`;
+      }).join("\n\n");
+      return header + body;
+    }
+
+    // ==================== INIT BINDINGS ====================
+    window.addEventListener("DOMContentLoaded", () => {
+      renderEditorial();
+      renderCards();
+      renderLab(100);
+
+      // View Tabs
+      document.getElementById("tab-editorial").addEventListener("click", () => switchView("editorial"));
+      document.getElementById("tab-cards").addEventListener("click", () => switchView("cards"));
+      document.getElementById("tab-compare").addEventListener("click", () => switchView("compare"));
+
+      // Tone Buttons
+      document.getElementById("tone-refined").addEventListener("click", () => switchTone("refined"));
+      document.getElementById("tone-raw").addEventListener("click", () => switchTone("raw"));
+      document.getElementById("tone-minimal").addEventListener("click", () => switchTone("minimal"));
+
+      // Card Aspect Buttons
+      const btn34 = document.getElementById("aspect-3-4");
+      const btn11 = document.getElementById("aspect-1-1");
+      btn34.addEventListener("click", () => {
+        cardAspect = "3-4";
+        btn34.className = "px-2.5 py-1 text-xs font-mono border border-[#0A0A0A] bg-[#0A0A0A] text-white";
+        btn11.className = "px-2.5 py-1 text-xs font-mono border border-[#E5E5E5] text-[#525252] hover:border-[#0A0A0A]";
+        renderCards();
+      });
+      btn11.addEventListener("click", () => {
+        cardAspect = "1-1";
+        btn11.className = "px-2.5 py-1 text-xs font-mono border border-[#0A0A0A] bg-[#0A0A0A] text-white";
+        btn34.className = "px-2.5 py-1 text-xs font-mono border border-[#E5E5E5] text-[#525252] hover:border-[#0A0A0A]";
+        renderCards();
+      });
+
+      // Swiss Grid Toggle
+      document.getElementById("btn-toggle-grid").addEventListener("click", () => {
+        showGrid = !showGrid;
+        const surface = document.getElementById("main-surface");
+        const dot = document.getElementById("grid-status-dot");
+        if (showGrid) {
+          surface.classList.add("swiss-grid-bg");
+          dot.classList.remove("bg-[#D4D4D4]");
+          dot.classList.add("bg-[#0A0A0A]");
+        } else {
+          surface.classList.remove("swiss-grid-bg");
+          dot.classList.remove("bg-[#0A0A0A]");
+          dot.classList.add("bg-[#D4D4D4]");
+        }
+      });
+
+      // Typography Controls
+      document.getElementById("select-weight").addEventListener("change", (e) => {
+        const w = e.target.value;
+        document.documentElement.style.setProperty("--body-weight", w);
+        document.documentElement.style.setProperty("--heading-weight", w === "300" ? "500" : w === "400" ? "600" : "700");
+      });
+
+      document.getElementById("range-tracking").addEventListener("input", (e) => {
+        const val = (Number(e.target.value) / 100).toFixed(2) + "em";
+        document.documentElement.style.setProperty("--body-tracking", val);
+      });
+
+      document.getElementById("range-leading").addEventListener("input", (e) => {
+        const val = (Number(e.target.value) / 100).toFixed(2);
+        document.documentElement.style.setProperty("--body-leading", val);
+      });
+
+      // Copy Buttons
+      document.getElementById("btn-copy-all").addEventListener("click", () => {
+        copyTextToClipboard(getFullCopyText(), "已复制整篇文案（当前所选版本）");
+      });
+
+      document.getElementById("btn-copy-epilogue").addEventListener("click", () => {
+        copyTextToClipboard("做目前觉得对的一切事情。喜欢设计，就寻找一个方向深挖。就这样。", "已复制结语金句");
+      });
+
+      document.getElementById("btn-copy-lab").addEventListener("click", () => {
+        const text = document.getElementById("lab-manifesto-preview").innerText.trim();
+        copyTextToClipboard(text, "已复制实验段落文案");
+      });
+
+      // Lab Slider & Presets
+      const slider = document.getElementById("lab-slider");
+      slider.addEventListener("input", (e) => {
+        labSliderValue = Number(e.target.value);
+        renderLab(labSliderValue);
+      });
+
+      document.getElementById("preset-ai").addEventListener("click", () => {
+        slider.value = "10";
+        renderLab(10);
+      });
+      document.getElementById("preset-struggle").addEventListener("click", () => {
+        slider.value = "50";
+        renderLab(50);
+      });
+      document.getElementById("preset-human").addEventListener("click", () => {
+        slider.value = "100";
+        renderLab(100);
+      });
+    });
+  </script>
+</body>
+</html>
